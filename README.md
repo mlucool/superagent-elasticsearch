@@ -1,7 +1,7 @@
 # superagent-elasticserach
 [![NPM version][npm-image]][npm-url] [![NPM DM][npm-dm-image]][npm-url] [![Build Status][travis-image]][travis-url]  [![Coverage Status][coveralls-image]][coveralls-url] [![Dependency Status][depstat-image]][depstat-url]
 
-> [Elasticsearch](https://github.com/elastic/elasticsearch-js) connection handler for [Superagent](https://github.com/visionmedia/superagent)
+> [Elasticsearch](https://github.com/elastic/elasticsearch-js) javascript connection handler for [Superagent](https://github.com/visionmedia/superagent)
 
 
 ## Why?
@@ -12,6 +12,7 @@ take an action per request (e.g. set a Authenticate token).
 ## Usage
 ### Simple
 ```javascript
+const elasticsearch = require('elasticsearch');
 const SuperagentConnector = require('superagent-elasticsearch');
 
 client = new elasticsearch.Client({
@@ -23,6 +24,7 @@ client = new elasticsearch.Client({
 
 ### Kerberos
 ```javascript
+const elasticsearch = require('elasticsearch');
 const SuperagentConnector = require('superagent-elasticsearch');
 
 const beforeEachRequest = (r) => async {
@@ -34,10 +36,15 @@ client = new elasticsearch.Client({
     host,
     log: 'debug',
     connectionClass: SuperagentConnector,
+    superagentConfig: {beforeEachRequest}
 });
 ```
 Recommended reading: https://www.npmjs.com/package/kerberos
 https://gist.github.com/dmansfield/c75817dcacc2393da0a7#file-http_client_spnego-js-L20
+
+## API
+In the config of `elasticsearch`, pass a `superagentConfig` config object. Parameters documented in the constructor,
+as well as tested in `./tests`.
 
 License
 -------------

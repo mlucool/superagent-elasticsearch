@@ -3,18 +3,19 @@ const HttpConnector = require('elasticsearch/src/lib/connectors/http');
 
 class SuperagentConnector extends HttpConnector {
     /**
-     * Connector that uses superagent over other modules. This both more portable and
-     * allows for kerberos
+     * Connector that uses superagent to make requests. See README for why you would want to do this.
      *
-     * @param host See elastic doc, we just forward on
-     * @param config Extends the one in elastic doc with a .superagent config object
+     * @param host See elastic doc, we just forward on to the parent
+     * @param config See elastic doc. This extends it with a .superagentConfig object
      * @param {Object} config.superagentConfig Options for this connector
-     * @param {Object} [config.superagentConfig.request] Replace the superagent used with a custom one
+     * @param {Object} [config.superagentConfig.request] Replace the superagent used with a custom one. Useful for mocking and extending superagent first
      * @param {function(object): Promise} [config.superagentConfig.beforeEachRequest] After a request is setup, this is
-     * called for any final changes before we call end. This is a good place to do things like set a Negotiate token in a header
+     * called for any final changes before we call end. This is a good place to do things like set a 'Negotiate token'
+     * in the header for SPNEGO (e.g. NTML/kerberos) support.
      */
     constructor(host, config) {
         super(host, config);
+        // By default we are happy to work out of the box
         this._superagent = superagent;
         this._beforeEachRequest = () => Promise.resolve();
 
@@ -62,7 +63,7 @@ class SuperagentConnector extends HttpConnector {
             .then(() => {
                 // End matches better to this cb style this expects than 'then'
                 r.end((err, ret) => {
-                    // TODO: This will parse the text in this.body. For performance it should be avoided by using pipe
+                    // TODO: superagent parses the r.text and puts it into r.body. For performance we should use pipe so we don't double parse
                     cb(err, ret && ret.text);
                 });
             })

@@ -38,7 +38,7 @@ describe('constructor', () => {
         );
         expect(connector._beforeEachRequest).to.eql(beforeEachRequest);
 
-        connector.request({headers: {bar: 'baz'}, body: {query: 'aquery'}}, (err, data) => {
+        const abort = connector.request({headers: {bar: 'baz'}, body: {query: 'aquery'}}, (err, data) => {
             if (err) {
                 cb(err);
             }
@@ -49,6 +49,7 @@ describe('constructor', () => {
             expect(dataAsJson.params.query).to.eql('aquery');
             cb();
         });
+        expect(abort).to.be.a('function');
     });
 
     it('Returns errors correctly', (cb) => {
