@@ -1,0 +1,53 @@
+{
+  "name": "superagent-elasticsearch",
+  "version": "0.1.0",
+  "description": "A superagent connection implementation for elasticsearch",
+  "main": "src/SuperagentConnector.js",
+  "scripts": {
+    "test": "nyc --all mocha",
+    "lint": "eslint src",
+    "coveralls": "npm run test && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+  },
+  "files": [
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mlucool/superagent-elasticsearch.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mlucool/superagent-elasticsearch/issues"
+  },
+  "homepage": "https://github.com/mlucool/superagent-elasticsearch#readme",
+  "keywords": [
+    "elastic",
+    "elasticsearch",
+    "superagent",
+    "connection"
+  ],
+  "author": {
+    "name": "Marc Udoff",
+    "email": "mlucool@gmail.com"
+  },
+  "license": "Apache-2.0",
+  "pre-commit": [
+    "test",
+    "lint"
+  ],
+  "peerDependencies": {
+    "elasticsearch": "^14.0.0"
+  },
+  "dependencies": {
+    "superagent": "^3.8.2"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "coveralls": "^3.0.0",
+    "elasticsearch": "^14.2.2",
+    "eslint": "^4.19.1",
+    "mocha": "^5.1.0",
+    "nyc": "^11.6.0",
+    "pre-commit": "^1.2.2",
+    "superagent-mock": "^3.7.0"
+  }
+}
