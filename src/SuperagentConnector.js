@@ -1,5 +1,6 @@
 const superagent = require('superagent'); // atypical import name, but it's less confusing
 const HttpConnector = require('elasticsearch/src/lib/connectors/http');
+const url = require('url');
 
 class SuperagentConnector extends HttpConnector {
     /**
@@ -39,9 +40,17 @@ class SuperagentConnector extends HttpConnector {
      * @private
      */
     _createRequest(params, reqParams) {
-        // eslint-disable-next-line max-len
-        const url = `${reqParams.protocol}//${reqParams.hostname}${reqParams.port ? `:${reqParams.port}` : ''}${reqParams.path}`;
-        const r = this._superagent(reqParams.method, url);
+        const reqObj = {}; // We build this like this because we don't have lodash
+        ['protocol', 'hostname', 'port'].forEach((part) => {
+            if (typeof reqParams[part] !== 'undefined') {
+                reqObj[part] = reqParams[part];
+            }
+        });
+        if (typeof reqParams.path !== 'undefined') {
+            reqObj.pathname = reqParams.path; // translation
+        }
+        const reqURL = url.format(reqObj);
+        const r = this._superagent(reqParams.method, reqURL);
         if (reqParams.agent) {
             r.agent(reqParams.agent); // This is how we reuse connections
         }
