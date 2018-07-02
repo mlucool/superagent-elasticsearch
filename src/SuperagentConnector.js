@@ -72,13 +72,20 @@ class SuperagentConnector extends HttpConnector {
             .then(() => {
                 // End matches better to this cb style this expects than 'then'
                 r.end((err, ret) => {
+                    // Could not talk to the server, this is the only time we set err for the cb
+                    // The missing err.status is the verification that this was not a server response
+                    // https://github.com/elastic/elasticsearch-js/issues/676#issuecomment-401432612
+                    if (err && !err.status) {
+                        cb(err);
+                        return;
+                    }
                     // TODO: superagent parses the r.text and puts it into r.body. For performance we should use pipe so we don't double parse
-                    cb(err, ret && ret.text);
+                    cb(undefined, ret && ret.text, ret.status, ret.headers);
                 });
             })
             .catch((err) => cb(err));
 
-        return r.abort; // Cancel
+        return r.abort.bind(r); // Cancel
     }
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "superagent-elasticsearch",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A superagent connection implementation for elasticsearch",
   "main": "src/SuperagentConnector.js",
   "scripts": {
@@ -35,7 +35,7 @@
     "lint"
   ],
   "peerDependencies": {
-    "elasticsearch": "^14.0.0"
+    "elasticsearch": "^15.0.0 || ^14.0.0"
   },
   "dependencies": {
     "superagent": "^3.8.2"
@@ -43,7 +43,7 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "coveralls": "^3.0.0",
-    "elasticsearch": "^14.2.2",
+    "elasticsearch": "^15.0.0",
     "eslint": "^4.19.1",
     "mocha": "^5.1.0",
     "nyc": "^11.6.0",
